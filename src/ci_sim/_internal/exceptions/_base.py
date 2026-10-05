@@ -1,5 +1,5 @@
-from __future__ import annotations
-
-
 class CiSimError(Exception):
-    """The base ci-sim error"""
+    """Base class for every error ci-sim raises on purpose.
+
+    Anything that isn't a CiSimError is a bug.
+    """

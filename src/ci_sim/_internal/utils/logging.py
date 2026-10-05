@@ -11,6 +11,7 @@ from types import TracebackType
 from typing import Final
 
 from ci_sim import DIST_NAME, __version__
+from ci_sim._internal.exceptions import ConfigurationError
 
 FORMATS: Final = frozenset({"json", "text"})
 
@@ -26,13 +27,13 @@ class RunIdFilter(logging.Filter):
 
 
 def setup_logging(level: str | None) -> None:
-    """Configure root logger. Raises ValueError for an invalid level or format."""
+    """Configure root logger. Raises ConfigurationError on bad settings."""
     level_name: str = (level or os.getenv("LOG_LEVEL") or "WARNING").upper()
     if level_name not in logging.getLevelNamesMapping():
-        raise ValueError(f"invalid log level: {level_name!r}")
+        raise ConfigurationError(f"invalid log level: {level_name!r}")
     fmt: str = os.getenv("LOG_FORMAT") or "text"
     if fmt not in FORMATS:
-        raise ValueError(
+        raise ConfigurationError(
             f"invalid LOG_FORMAT: {fmt!r} (expected one of {sorted(FORMATS)})"
         )
 
@@ -54,13 +55,15 @@ def setup_logging(level: str | None) -> None:
                     },
                 },
                 "text": {
-                    "format": "%(asctime)s %(levelname)-8s %(name)s [%(run_id)s] %(message)s",
+                    "format": "%(asctime)s %(levelname)-8s %(name)s "
+                    "[%(run_id)s] %(message)s",
                 },
             },
             "handlers": {
                 "stderr": {
                     "class": "logging.StreamHandler",
-                    "stream": "ext://sys.stderr",  # stdout is reserved for the tool's output
+                    # stdout is reserved for the tool's output
+                    "stream": "ext://sys.stderr",
                     "formatter": fmt,
                     # on the handler, so records from every logger get it
                     "filters": ["run_id"],

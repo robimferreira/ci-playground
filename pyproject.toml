@@ -1,7 +1,7 @@
 [project]
 name = "ci-sim"
 version = "0.1.0"
-description = "Add your description here"
+description = "To be defined"
 readme = "README.md"
 authors = [
     { name = "Robim Ferreira", email = "fpgr07@gmail.com" }
@@ -25,3 +25,4 @@ dev = [
 
 [tool.ruff]
 line-length = 80
+lint.select = ["E", "F", "W", "I", "B", "UP", "G", "ARG", "PT"]

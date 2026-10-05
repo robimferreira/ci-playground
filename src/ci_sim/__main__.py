@@ -1,14 +1,15 @@
 import sys
 
+from ci_sim._internal.cli.exit_codes import ExitCode
 from ci_sim._internal.cli.main import main
 
 
-def _run() -> None:
+def _run() -> ExitCode:
     try:
-        sys.exit(main())
+        return main()
     except KeyboardInterrupt:
-        sys.exit(130)
+        return ExitCode.INTERRUPTED
 
 
 if __name__ == "__main__":
-    _run()
+    sys.exit(_run())
