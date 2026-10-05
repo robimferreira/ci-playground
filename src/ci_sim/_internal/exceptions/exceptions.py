@@ -1,4 +1,4 @@
-class CI_Sim_ERROR(Exception):
+class CiSimError(Exception):
     """Base exception for all ci_sim errors."""
 
     def __init__(self, message: str, exit_code: int = 1):
@@ -7,13 +7,13 @@ class CI_Sim_ERROR(Exception):
         super().__init__(self.message)
 
 
-class ConfigurationError(CI_Sim_ERROR):
+class ConfigurationError(CiSimError):
     pass
 
 
-class NetworkError(CI_Sim_ERROR):
+class NetworkError(CiSimError):
     pass
 
 
-class ValidationErrr(CI_Sim_ERROR):
+class ValidationErrr(CiSimError):
     pass
